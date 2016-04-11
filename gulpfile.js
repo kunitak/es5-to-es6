@@ -5,10 +5,11 @@ var reactify = require('reactify');
 
 gulp.task('browserify', function(){
   var b = browserify({
-    entries: ['./client/scripts/index.js'],
-    transform: [reactify]
+    entries: ['./client/scripts/index.js']
   });
-  return b.bundle()
+  return b
+    .transform("babelify", {presets: ["es2015", "react"]})
+    .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest('./client/build'));
 });

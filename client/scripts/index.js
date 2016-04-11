@@ -1,38 +1,37 @@
-var React = require('react');
-var ReactRouter = require('react-router');
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var IndexRoute = ReactRouter.IndexRoute;
-var History = ReactRouter.History;
-var hashHistory = ReactRouter.hashHistory;
-var ReactDOM = require('react-dom');
-var Header = require('./views/header.jsx');
-var Body = require('./views/body.jsx');
-var UserBox = require('./views/userbox.jsx');
-var Footer = require('./views/footer.jsx');
+import React from 'react';
+import ReactRouter, {Router, Route, IndexRoute, History, hashHistory} from 'react-router';
+import ReactDOM from 'react-dom';
+import Header from './views/header.jsx';
+import Body from './views/body.jsx';
+import UserBox from './views/userbox.jsx';
+import Footer from './views/footer.jsx';
 
-var Index = React.createClass({
-  render: function(){
+class Index extends React.Component{
+  render(){
     return (
       <div>
         {this.props.children}
       </div>
     );
   }
-});
+}
 
-var Top = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-  handleSubmit:function(e){
-    e.preventDefault();
-    /* ログイン処理 */
+class Top extends React.Component{
+  constructor(props, context){
+    super(props, context);
+    //thisを使えるようにbindする
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-    //ポータルページへ
-    this.context.router.push({pathname: '/portal', query: '', state: ''});
-  },
-  render:function(){
+  handleSubmit(e){
+      e.preventDefault();
+      /* ログイン処理 */
+
+      //ポータルページへ
+      this.context.router.push({pathname: '/portal', query: '', state: ''});
+  }
+  
+  render(){
     return (
       <div>
         <div className="main">
@@ -47,11 +46,15 @@ var Top = React.createClass({
         </div>
       </div>
     );
-  }
-});
+  };
+}
+//contextTypesは外で定義する
+Top.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}
 
-var Main = React.createClass({
-  render:function(){
+class Main extends React.Component{
+  render(){
     return (
       <div>
         <Header/>
@@ -62,9 +65,9 @@ var Main = React.createClass({
       </div>
     );
   }
-});
+};
 
-var Routes = (
+const Routes = (
   <Route path="/" component={Index}>
     <IndexRoute component={Top}/>
     <Route path="/top" component={Top}/>

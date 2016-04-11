@@ -1,31 +1,31 @@
-var React = require('react');
-var ajax = require('./storeUtils').ajax;
+import React from 'react';
+import ajax from './storeUtils';
 
-var Dispatcher = require('../dispatchers/dispatcher');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
+import Dispatcher from '../dispatchers/dispatcher';
+import {EventEmitter} from 'events';
+import assign from 'object-assign';
 
-var userStore = assign({}, EventEmitter.prototype, {
+let userStore = assign({}, EventEmitter.prototype, {
   data: {userData: []},
-  addLoadListener: function (callback) {
+  addLoadListener(callback) {
     this.on('load', callback);
   },
-  removeLoadListener: function (callback) {
+  removeLoadListener(callback) {
     this.removeListener('load', callback);
   },
-  addRegisterListener: function (callback) {
+  addRegisterListener(callback) {
     this.on('register', callback);
   },
-  removeRegisterListener: function (callback) {
+  removeRegisterListener(callback) {
     this.removeListener('register', callback);
   },
-  getAjaxResult: function(){
+  getAjaxResult(){
     return userStore.data;
   }
 });
 
 //バリデーション
-var validation = function(target){
+let validation = function(target){
   if (!target.name){
     alert('名前を入力してください');
     return false;
@@ -38,27 +38,23 @@ var validation = function(target){
 };
 
 userStore.dispatchToken = Dispatcher.register(function (payload) {
-  var registerCallback = function(err, res){
-    return callback(err, res, 'register');
-  }
-  var loadCallback = function(err, res){
-    return callback(err, res, 'load');
-  }
-  var callback = function(err, res, name){
+  let registerCallback = (err, res) => callback(err, res, 'register');
+  let loadCallback = (err, res) => callback(err, res, 'load');
+  let callback = (err, res, name) => {
     if (err){
       alert(res.text);
       return;
     }
     userStore.data = {userData: JSON.parse(res.text)};
     userStore.emit(name);
-  }.bind(userStore);
+  }
 
-  var actions = {
-    load: function (payload) {
+  let actions = {
+    load(payload){
       //ajax通信する
       ajax.get("/get_users", {}, loadCallback);
     },
-    register: function (payload) {
+    register(payload) {
       if (!validation(payload.action.target)){
         return;
       }
@@ -70,4 +66,4 @@ userStore.dispatchToken = Dispatcher.register(function (payload) {
   actions[payload.action.type] && actions[payload.action.type](payload);
 });
 
-module.exports = userStore;
+export default userStore;
