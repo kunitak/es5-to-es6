@@ -1,23 +1,18 @@
-var React = require('react');
-var request = require('superagent');
+import React from 'react';
+import request from 'superagent';
 
-var ajax = {
-  get  : function(url, params, callback){
+let ajax = {
+  get  : (url, params, callback) => 
     request
       .get(url)
       .query(params)
-      .end(function(err, res){
-        callback(err, res);
-      });
-  },
-  post : function(url, params, callback){
+      .end((err, res) => callback(err, res))
+  ,
+  post : (url, params, callback) => 
     request
       .post(url)
       .send(params)
-      .end(function(err, res){
-        callback(err, res);
-      });
-  }
+      .end((err, res) => callback(err, res))
 };
 
-module.exports.ajax = ajax;
+export default ajax;

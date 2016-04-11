@@ -1,42 +1,51 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-var UserActions = require('../actions/userActions');
-var UserStore = require('../stores/userStore');
+import UserActions from '../actions/userActions';
+import UserStore from '../stores/userStore';
 
-var getUserStoreStates = function(){
-  return UserStore.getAjaxResult();
-};
+let getUserStoreStates = () => UserStore.getAjaxResult();
 
 //フォームとリストを一つにしたもの
-var UserBox = React.createClass({
-  getInitialState:function(){
-    return getUserStoreStates();
-  },
-  componentWillMount:function(){
+class UserBox extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = getUserStoreStates();
+    this.onViewUsers = this.onViewUsers.bind(this);
+    this.onUpdatedUser = this.onUpdatedUser.bind(this);
+    this.handleAddUser = this.handleAddUser.bind(this);
+  }
+
+  componentWillMount(){
     UserStore.addLoadListener(this.onViewUsers);
     UserStore.addRegisterListener(this.onUpdatedUser);
-  },
-  componentWillUnmount:function(){
+  }
+  
+  componentWillUnmount(){
     UserStore.removeLoadListener(this.onViewUsers);
     UserStore.removeRegisterListener(this.onUpdatedUser);
-  },
-  onViewUsers:function(){
+  }
+  
+  onViewUsers(){
     this.setState(getUserStoreStates());
-  },
-  onUpdatedUser:function(){
+  }
+  
+  onUpdatedUser(){
     //更新成功したらクリアする
     ReactDOM.findDOMNode(this.refs.userform.refs.name).value = "";
     ReactDOM.findDOMNode(this.refs.userform.refs.mail).value = "";
     this.onViewUsers();
-  },
-  handleAddUser:function(name, mail){
+  }
+  
+  handleAddUser(name, mail){
     UserActions.register({name: name, mail: mail});
-  },
-  componentDidMount:function(){
+  }
+  
+  componentDidMount(){
     UserActions.load();
-  },
-  render:function(){
+  }
+  
+  render(){
     return(
       <div style={{width:"300px"}}>
         <UserForm addUser={this.handleAddUser} ref="userform"/>
@@ -45,15 +54,11 @@ var UserBox = React.createClass({
       </div>
     );
   }
-});
+}
 
 //リスト一行分を表示するコンポーネントを定義
-var User = React.createClass({
-  propTypes:{
-    name: React.PropTypes.string.isRequired,
-    mail: React.PropTypes.string
-  },
-  render:function(){
+class User extends React.Component{
+  render(){
     return (
       <tr>
         <td>{this.props.name}</td>
@@ -61,14 +66,17 @@ var User = React.createClass({
       </tr>
     );
   }
-});
+}
+//propTypesは外で定義する
+User.propTypes = {
+  name: React.PropTypes.string.isRequired,
+  mail: React.PropTypes.string
+};
+
 
 //リストそのものを表示するコンポーネントを定義
-var UserList = React.createClass({
-  propTypes:{
-    userData:React.PropTypes.arrayOf(React.PropTypes.object).isRequired
-  },
-  render:function(){
+class UserList extends React.Component{
+  render(){
     var UserNodes = this.props.userData.map(function(user, index){
       return (
         <User name={user.name} mail={user.mail} key={index}/>
@@ -86,19 +94,25 @@ var UserList = React.createClass({
       </table>
     );
   }
-});
+}
+UserList.propTypes = {
+  userData:React.PropTypes.arrayOf(React.PropTypes.object).isRequired
+};
 
 //ユーザーの入力フォームを定義
-var UserForm = React.createClass({
-  propTypes:{
-    addUser:React.PropTypes.func.isRequired
-  },
-  handleSubmit:function(){
+class UserForm extends React.Component{
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(){
     var name = ReactDOM.findDOMNode(this.refs.name).value.trim();
     var mail = ReactDOM.findDOMNode(this.refs.mail).value.trim();
     this.props.addUser(name, mail);
-  },
-  render:function(){
+  }
+
+  render(){
     return (
       <div>
         <table>
@@ -127,6 +141,9 @@ var UserForm = React.createClass({
       </div>
     );
   }
-});
+}
+UserForm.propTypes = {
+  addUser:React.PropTypes.func.isRequired
+}
 
-module.exports = UserBox;
+export default UserBox;

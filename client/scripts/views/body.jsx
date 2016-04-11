@@ -1,12 +1,24 @@
-var React = require('react');
+import React from 'react';
 
 //ボディの定義
-var Body = React.createClass({
-  render: function(){
+class Body extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {message: ''}; //getInitialStateの代わりにconstructorで設定する
+  }
+  
+  render(){
     return (
-      <h1>ポータル</h1>
+      <h1>ポータル {this.state.message}</h1>
     );
   }
-});
+}
 
-module.exports = Body;
+//継承：ボディの定義
+class ParentBody extends Body{
+  componentDidMount() {
+    this.setState({message: 'huga'});
+  }
+}
+
+export default ParentBody;

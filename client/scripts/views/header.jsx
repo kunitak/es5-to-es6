@@ -1,20 +1,20 @@
-var React = require('react');
-var ReactRouter = require('react-router');
-var History = ReactRouter.History;
-var Link = ReactRouter.Link;
+import React from 'react';
+import ReactRouter, {History as History, Link as Link} from 'react-router';//コンポーネントのメンバの場合は{}で囲む as をつけると右側が変数名になる
 
 //ヘッダの定義
-var Header = React.createClass({
-  contextTypes: {
-    router: React.PropTypes.object.isRequired
-  },
-  handleClick: function(e){
+class Header extends React.Component{
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(e){
   	/* ログアウト処理 */
     
     //ログイン画面へ
     this.context.router.push('/');
-  },
-  render: function(){
+  }
+  render(){
     return (
       <header>
         <div style={{position:"absolute", margin: "-15px 0px"}}>
@@ -29,6 +29,10 @@ var Header = React.createClass({
       </header>
     );
   }
-});
+};
+//contextTypesは外で定義する
+Header.contextTypes = {
+  router: React.PropTypes.object.isRequired
+}
 
-module.exports = Header;
+export default Header;

@@ -1,8 +1,8 @@
-var React = require('react');
+import React from 'react';
 
 //フッタの定義
-var Footer = React.createClass({
-  render: function(){
+class Footer extends React.Component{
+  render() {
     return (
       <footer style={{textAlign: "center"}}>
         <hr/>
@@ -10,6 +10,6 @@ var Footer = React.createClass({
       </footer>
     );
   }
-});
+};
 
-module.exports = Footer;
+export default Footer;

@@ -1,15 +1,15 @@
-var Dispatcher = require('../dispatchers/dispatcher');
+import Dispatcher from '../dispatchers/dispatcher';
 
-var userActions = {
+let userActions = {
   //ユーザー一覧の取得
-  load: function(target){
+  load(target){
     Dispatcher.handleServerAction({
       type: 'load',
       target: target
     });
   },
   //ユーザーの登録
-  register: function (target) {
+  register(target) {
     Dispatcher.handleServerAction({
       type: 'register',
       target: target
@@ -17,4 +17,4 @@ var userActions = {
   }
 };
 
-module.exports = userActions;
+export default userActions;
