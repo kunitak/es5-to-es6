@@ -2,7 +2,7 @@ import {Dispatcher as Dispatcher} from 'flux';
  
 import assign from 'object-assign';
  
-var appDispatcher = assign(new Dispatcher(), {
+const appDispatcher = assign(new Dispatcher(), {
     handleServerAction(action) {
         this.dispatch({
             source: 'server',

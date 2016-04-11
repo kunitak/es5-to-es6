@@ -1,6 +1,6 @@
 import Dispatcher from '../dispatchers/dispatcher';
 
-let userActions = {
+const userActions = {
   //ユーザー一覧の取得
   load(target){
     Dispatcher.handleServerAction({

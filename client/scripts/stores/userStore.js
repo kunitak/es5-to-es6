@@ -5,7 +5,7 @@ import Dispatcher from '../dispatchers/dispatcher';
 import {EventEmitter} from 'events';
 import assign from 'object-assign';
 
-let userStore = assign({}, EventEmitter.prototype, {
+const userStore = assign({}, EventEmitter.prototype, {
   data: {userData: []},
   addLoadListener(callback) {
     this.on('load', callback);
@@ -25,7 +25,7 @@ let userStore = assign({}, EventEmitter.prototype, {
 });
 
 //バリデーション
-let validation = function(target){
+const validation = function(target){
   if (!target.name){
     alert('名前を入力してください');
     return false;
@@ -38,9 +38,9 @@ let validation = function(target){
 };
 
 userStore.dispatchToken = Dispatcher.register(function (payload) {
-  let registerCallback = (err, res) => callback(err, res, 'register');
-  let loadCallback = (err, res) => callback(err, res, 'load');
-  let callback = (err, res, name) => {
+  const registerCallback = (err, res) => callback(err, res, 'register');
+  const loadCallback = (err, res) => callback(err, res, 'load');
+  const callback = (err, res, name) => {
     if (err){
       alert(res.text);
       return;
@@ -49,7 +49,7 @@ userStore.dispatchToken = Dispatcher.register(function (payload) {
     userStore.emit(name);
   }
 
-  let actions = {
+  const actions = {
     load(payload){
       //ajax通信する
       ajax.get("/get_users", {}, loadCallback);
