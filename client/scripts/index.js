@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactRouter, {Router, Route, IndexRoute, History, hashHistory} from 'react-router';
+import {Router, Route, IndexRoute, History, hashHistory} from 'react-router';
 import ReactDOM from 'react-dom';
 import Header from './views/header.jsx';
 import Body from './views/body.jsx';
