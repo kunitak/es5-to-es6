@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import UserActions from '../actions/userActions';
 import UserStore from '../stores/userStore';
 
-const getUserStoreStates = (UserStore.getAjaxResult());
+const getUserStoreStates = () => UserStore.getAjaxResult();
 
 //フォームとリストを一つにしたもの
 class UserBox extends React.Component{
