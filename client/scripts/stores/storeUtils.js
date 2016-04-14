@@ -1,7 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 
-let ajax = {
+const ajax = {
   get  : (url, params, callback) => {
     request
       .get(url)
