@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import UserActions from '../actions/userActions';
 import UserStore from '../stores/userStore';
 
-let getUserStoreStates = () => UserStore.getAjaxResult();
+const getUserStoreStates = (UserStore.getAjaxResult());
 
 //フォームとリストを一つにしたもの
 class UserBox extends React.Component{
@@ -77,7 +77,7 @@ User.propTypes = {
 //リストそのものを表示するコンポーネントを定義
 class UserList extends React.Component{
   render(){
-    var UserNodes = this.props.userData.map(function(user, index){
+    const UserNodes = this.props.userData.map((user, index) => {
       return (
         <User name={user.name} mail={user.mail} key={index}/>
       );
@@ -107,8 +107,8 @@ class UserForm extends React.Component{
   }
 
   handleSubmit(){
-    var name = ReactDOM.findDOMNode(this.refs.name).value.trim();
-    var mail = ReactDOM.findDOMNode(this.refs.mail).value.trim();
+    const name = ReactDOM.findDOMNode(this.refs.name).value.trim();
+    const mail = ReactDOM.findDOMNode(this.refs.mail).value.trim();
     this.props.addUser(name, mail);
   }
 
